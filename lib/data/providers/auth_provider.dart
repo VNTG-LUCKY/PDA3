@@ -46,12 +46,8 @@ class AuthNotifier extends StateNotifier<AsyncValue<SessionModel?>> {
     try {
       final apiService = _ref.read(pdaApiServiceProvider);
       final session = await apiService.login(
-        LoginRequestModel(
-          userId: userId,
-          userPassword: password,
-          fromDevice: 'M', // 모바일 앱
-          uuid: await _generateDeviceUuid(),
-        ),
+        userId,
+        password,
       );
       
       final storageService = _ref.read(storageServiceProvider);
