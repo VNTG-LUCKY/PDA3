@@ -91,7 +91,7 @@ flutter doctor
 - 코드를 복사할 위치의 경로에서 명령어를 실행하세요.
 
 ```bash
-git clone "https://github.com/VNTG-LUCKY/PDA3" .
+git clone https://github.com/VNTG-LUCKY/PDA3.git .
 ```
 
 ### 2️⃣ 의존성 설치
@@ -141,42 +141,7 @@ flutter run --dart-define=ENV=prod
 
 ## 📁 프로젝트 구조
 
-```
-lib/
-├── main.dart                     # 앱의 시작점
-│
-├── core/                         # 핵심 설정
-│   ├── config/
-│   │   └── env.dart             # 환경 변수 관리
-│   └── router/
-│       └── app_router.dart      # GoRouter 라우팅 설정
-│
-├── data/                         # 데이터 레이어
-│   ├── models/                   # 데이터 모델
-│   │   ├── coil_model.dart
-│   │   └── user_model.dart
-│   └── services/                 # API 서비스
-│       ├── api_service.dart
-│       └── pda_api_service.dart
-│
-├── presentation/                 # 프레젠테이션 레이어
-│   ├── screens/                  # 화면
-│   │   ├── coil/
-│   │   ├── location/
-│   │   └── shipment/
-│   ├── view_models/              # 상태 관리
-│   │   ├── coil_view_model.dart
-│   │   ├── location_view_model.dart
-│   │   └── shipment_view_model.dart
-│   └── widgets/                  # 재사용 가능한 위젯
-│       ├── custom_app_bar.dart
-│       ├── custom_button.dart
-│       └── loading_indicator.dart
-│
-└── utils/                        # 유틸리티
-    ├── constants.dart            # 상수 정의
-    └── formatters.dart           # 데이터 포맷터
-```
+* 상세한 프로젝트 구조는 `Flutter_프로젝트_구조_및_모델_정의` md 파일을 참고해주시기 바랍니다.
 
 ---
 
