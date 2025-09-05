@@ -45,7 +45,13 @@ class PdaApiService {
         List<Cookie> cookies = await _cookieJar.loadForRequest(Uri.parse(ApiConstants.baseUrl));
         // Check if the JSESSIONID cookie exists after the login call.
         bool sessionCreated = cookies.any((cookie) => cookie.name == 'JSESSIONID');
-        if (sessionCreated) {
+
+        final String htmlBody = response.data.toString();
+        const String successKeyword = '작업환경설정';
+        final bool isLoginSuccess = htmlBody.contains(successKeyword);
+
+        if (isLoginSuccess) {
+          print("✅ Login Successful: Success keyword ('$successKeyword') found in response body.");
               return SessionModel(
                       user: UserModel(
                         id: userId,
@@ -71,36 +77,17 @@ class PdaApiService {
             } else {
               print("Login Failed: Server returned 200 OK, but no session cookie was set.");
               // This can happen if credentials are wrong and it just re-renders the login page.
-              throw Exception('로그인 실패: 세션 쿠키가 설정되지 않았습니다');
+              throw Exception('아이디와 비밀번호를 확인하세요.');
             }
           } else {
             print("Login failed with status: ${response.statusCode}");
-            throw Exception('로그인 실패: ${response.statusCode}');
+            throw Exception('${response.statusCode}');
           }
-      //   // API 문서에 따라 응답에서 사용자 정보 추출
-      //   final userData = response.data!;
-        
-      //   // UserModel 생성
-      //   final user = UserModel.fromJson(userData);
-        
-      //   // SessionModel 생성 - 실제 토큰 정보는 서버 응답에 따라 조정 필요
-      //   return SessionModel(
-      //     user: user,
-      //     sessionId: userData['sessionId'] as String?,
-      //     accessToken: userData['accessToken'] as String? ?? 'mock_token_${DateTime.now().millisecondsSinceEpoch}',
-      //     refreshToken: userData['refreshToken'] as String?,
-      //     expiresAt: DateTime.now().add(const Duration(hours: 8)), // 8시간 후 만료
-      //     lastAccess: DateTime.now(),
-      //     isValid: true,
-      //   );
-      // } else {
-      //   throw Exception('로그인 응답 데이터가 없습니다');
-      // }
     }
      on DioException catch (e) {
       print("Error during login: $e");
       throw Exception('로그인 실패: ${e.toString()}');
-    } 
+    }
     catch (e) {
       throw Exception('로그인 실패: ${e.toString()}');
     }

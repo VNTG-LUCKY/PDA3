@@ -56,6 +56,7 @@ class AuthNotifier extends StateNotifier<AsyncValue<SessionModel?>> {
       state = AsyncValue.data(session);
     } catch (e) {
       state = AsyncValue.error(e, StackTrace.current);
+      throw e;
     }
   }
 
