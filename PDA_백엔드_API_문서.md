@@ -399,3 +399,33 @@ function fn_exit() {
     }
 }
 ```
+
+###Summary
+
+Claude have successfully analyzed the legacy JSP codebase from legacy and created a comprehensive back-end API documentation for your Flutter rebuild project. Here's what Claude extracted:
+
+* Key Findings:
+  71 JSP Files organized into 7 main modules
+  3 Main Functional Areas:
+  - Shipment Management (출하관리) - 8 screens
+  - Raw Material Management (원자재관리) - 4 screens
+  - Storage Location Management (적재위치관리) - 5 screens
+
+* Company-Specific Logic for 4 different factories:
+  - 포항공장 (Pohang) - company='1000'
+  - 군산공장 (Gunsan) - company='2000'
+  - 창원공장 (Changwon) - company='3000'
+  - 순천공장 (Suncheon) - company='4000'
+
+* Mobile Device Integration:
+  - Barcode scanning capabilities
+  - GPS location services
+  - Android native bridge integration
+
+* Key API Patterns Identified:
+  - AJAX Processing Pattern: Most screens use {ModuleName}AjaxProc routes
+  - Work Code System: Operations identified by specific work codes (e.g., btnVIEW_Click, SaveData)
+  - Session Management: Centralized user session with company-specific permissions
+  - Error Handling: Standardized session timeout detection and error responses
+
+The documentation provides all the necessary backend route information, screen identifiers, and business logic patterns needed to implement the Flutter frontend while maintaining compatibility with your existing backend infrastructure.
