@@ -400,7 +400,7 @@ function fn_exit() {
 }
 ```
 
-###Summary
+### Summary
 
 Claude have successfully analyzed the legacy JSP codebase from legacy and created a comprehensive back-end API documentation for your Flutter rebuild project. Here's what Claude extracted:
 
