@@ -3,12 +3,9 @@ import 'dart:io';
 import '../models/coil_model.dart';
 import '../models/user_model.dart';
 import '../models/auth/session_model.dart';
-import '../models/auth/login_request_model.dart';
-import 'api_service.dart';
 import 'package:cookie_jar/cookie_jar.dart';
 import 'package:dio/dio.dart';
 import 'package:dio_cookie_manager/dio_cookie_manager.dart';
-import 'package:path_provider/path_provider.dart';
 import '../../core/constants/api_constants.dart';
 
 class PdaApiService {

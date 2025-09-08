@@ -1,11 +1,11 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../models/auth/session_model.dart';
 import '../models/user_model.dart';
-import '../models/auth/login_request_model.dart';
 import '../services/pda_api_service.dart';
 import '../../core/services/storage_service.dart';
 
-final authStateProvider = StateNotifierProvider<AuthNotifier, AsyncValue<SessionModel?>>((ref) {
+final authStateProvider =
+    StateNotifierProvider<AuthNotifier, AsyncValue<SessionModel?>>((ref) {
   return AuthNotifier(ref);
 });
 
@@ -20,7 +20,7 @@ class AuthNotifier extends StateNotifier<AsyncValue<SessionModel?>> {
     try {
       final storageService = _ref.read(storageServiceProvider);
       final sessionData = await storageService.getSession();
-      
+
       // 세션 유효성 검사
       if (sessionData != null) {
         final isValid = await storageService.isSessionValid();
@@ -49,10 +49,10 @@ class AuthNotifier extends StateNotifier<AsyncValue<SessionModel?>> {
         userId,
         password,
       );
-      
+
       final storageService = _ref.read(storageServiceProvider);
       await storageService.saveSession(session);
-      
+
       state = AsyncValue.data(session);
     } catch (e) {
       state = AsyncValue.error(e, StackTrace.current);
@@ -64,10 +64,10 @@ class AuthNotifier extends StateNotifier<AsyncValue<SessionModel?>> {
     try {
       final apiService = _ref.read(pdaApiServiceProvider);
       await apiService.logout();
-      
+
       final storageService = _ref.read(storageServiceProvider);
       await storageService.clearSession();
-      
+
       state = const AsyncValue.data(null);
     } catch (e) {
       // 로그아웃 에러가 발생해도 로컬 세션은 삭제
@@ -86,11 +86,11 @@ class AuthNotifier extends StateNotifier<AsyncValue<SessionModel?>> {
       // 현재는 단순히 마지막 접근 시간만 업데이트
       final storageService = _ref.read(storageServiceProvider);
       await storageService.updateLastAccess();
-      
+
       final updatedSession = currentSession.copyWith(
         lastAccess: DateTime.now(),
       );
-      
+
       await storageService.saveSession(updatedSession);
       state = AsyncValue.data(updatedSession);
     } catch (e) {
@@ -122,7 +122,7 @@ final currentUserProvider = Provider<UserModel?>((ref) {
   return authState.whenOrNull(data: (session) => session?.user);
 });
 
-// 현재 회사 정보 프로바이더  
+// 현재 회사 정보 프로바이더
 final currentCompanyProvider = Provider<String?>((ref) {
   final user = ref.watch(currentUserProvider);
   return user?.company;
