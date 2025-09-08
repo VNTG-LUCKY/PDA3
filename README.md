@@ -105,7 +105,7 @@ flutter pub get
 Freezed 모델과 JSON 직렬화 코드를 생성합니다:
 
 ```bash
-flutter packages pub run build_runner build
+flutter packages pub run build_runner build --delete-conflicting-outputs
 ```
 
 ### 4️⃣ 환경 설정 확인
