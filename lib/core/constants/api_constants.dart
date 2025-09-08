@@ -4,18 +4,18 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 class ApiConstants {
   // Base URLs
   static String baseUrl = dotenv.env['BASE_URL'] ?? 'fallback_url_not_found';
-  
+
   // Auth endpoints
   static const String login = '/pdaLoginRedirect.do';
   static const String logout = '/pdaLogout';
   static const String memberLogin = '/memberLoginChk';
-  
+
   // Main endpoints
   static const String index = '/index';
   static const String notice = '/pdaNotice';
   static const String moveDate = '/moveDate';
   static const String schRead4Ajax = '/schRead4Ajax';
-  
+
   // Shipment endpoints
   static const String shipmentMenu = '/ShipmentMenu';
   static const String ndmShipment = '/NdmShipment';
@@ -30,7 +30,7 @@ class ApiConstants {
   static const String procHistInquiryAjax = '/ProcHistInquiryAjaxProc';
   static const String plantTrans = '/PlantTrans';
   static const String plantTransAjax = '/PlantTransAjaxProc';
-  
+
   // Coil endpoints
   static const String coilMenu = '/CoilMenu';
   static const String coilInput = '/CoilInput';
@@ -40,8 +40,9 @@ class ApiConstants {
   static const String coilPositionChange2 = '/CoilPositionChange2';
   static const String coilPositionChange2Ajax = '/CoilPositionChange2AjaxProc';
   static const String coilPositionChangePo = '/CoilPositionChangePo';
-  static const String coilPositionChangePoAjax = '/CoilPositionChangePoAjaxProc';
-  
+  static const String coilPositionChangePoAjax =
+      '/CoilPositionChangePoAjaxProc';
+
   // Location endpoints
   static const String locationMenu = '/LocationMenu';
   static const String location = '/Location';
@@ -54,7 +55,7 @@ class ApiConstants {
   static const String locationInputCoilAjax = '/LocationInputCoilAjaxProc';
   static const String locationHistoryCoil = '/LocationHistoryCoil';
   static const String locationHistoryCoilAjax = '/LocationHistoryCoilAjaxProc';
-  
+
   // Board endpoints
   static const String boardList = '/boardList';
   static const String boardRead = '/boardRead';

@@ -16,79 +16,76 @@ class PdaApiService {
   late CookieJar _cookieJar;
   PdaApiService() {
     _dio = Dio(BaseOptions(
-      baseUrl: ApiConstants.baseUrl,
-      connectTimeout: const Duration(seconds: 30),
-      receiveTimeout: const Duration(seconds: 30),
-      headers: {
-        'Content-Type': 'application/x-www-form-urlencoded',
-      },
-    ));
+        baseUrl: ApiConstants.baseUrl,
+        connectTimeout: const Duration(seconds: 30),
+        receiveTimeout: const Duration(seconds: 30),
+        headers: {'Content-Type': 'application/x-www-form-urlencoded'}));
     _cookieJar = CookieJar();
     _dio.interceptors.add(CookieManager(_cookieJar));
-    _dio.interceptors.add(LogInterceptor(responseBody: true, requestBody: true));
+    _dio.interceptors
+        .add(LogInterceptor(responseBody: true, requestBody: true));
   }
 
   // Authentication related APIs
   Future<SessionModel> login(String userId, String userPassword) async {
     try {
-      final response = await _dio.post<String>(
-        ApiConstants.login,
-        queryParameters: {
-          'userId': userId,
-          'userPassword': userPassword,
-          'fromDevice': 'M',
-          'uuid': "1234567890",
-        }
-      );
-      
+      final response =
+          await _dio.post<String>(ApiConstants.login, queryParameters: {
+        'userId': userId,
+        'userPassword': userPassword,
+        'fromDevice': 'M',
+        'uuid': "1234567890"
+      });
+
       if (response.statusCode == 200) {
-        List<Cookie> cookies = await _cookieJar.loadForRequest(Uri.parse(ApiConstants.baseUrl));
+        List<Cookie> cookies =
+            await _cookieJar.loadForRequest(Uri.parse(ApiConstants.baseUrl));
         // Check if the JSESSIONID cookie exists after the login call.
-        bool sessionCreated = cookies.any((cookie) => cookie.name == 'JSESSIONID');
+        bool sessionCreated =
+            cookies.any((cookie) => cookie.name == 'JSESSIONID');
 
         final String htmlBody = response.data.toString();
         const String successKeyword = '작업환경설정';
         final bool isLoginSuccess = htmlBody.contains(successKeyword);
 
         if (isLoginSuccess) {
-          print("✅ Login Successful: Success keyword ('$successKeyword') found in response body.");
-              return SessionModel(
-                      user: UserModel(
-                        id: userId,
-                        company: '',
-                        companyName: '',
-                        notiCount: 0,
-                        factory: '',
-                        userId: userId,
-                        username: '',
-                        email: '',
-                        role: '',
-                        lastLoginAt: DateTime.now(),
-                        isActive: true,
-                        fromDevice: 'M'
-                      ),
-                      sessionId: cookies.first.value,
-                      accessToken: cookies.first.value,
-                      refreshToken: cookies.first.value,
-                      expiresAt: DateTime.now().add(const Duration(hours: 8)), // 8시간 후 만료
-                      lastAccess: DateTime.now(),
-                      isValid: true,
-                    );
-            } else {
-              print("Login Failed: Server returned 200 OK, but no session cookie was set.");
-              // This can happen if credentials are wrong and it just re-renders the login page.
-              throw Exception('아이디와 비밀번호를 확인하세요.');
-            }
-          } else {
-            print("Login failed with status: ${response.statusCode}");
-            throw Exception('${response.statusCode}');
-          }
-    }
-     on DioException catch (e) {
+          print(
+              "✅ Login Successful: Success keyword ('$successKeyword') found in response body.");
+          return SessionModel(
+              user: UserModel(
+                  id: userId,
+                  company: '',
+                  companyName: '',
+                  notiCount: 0,
+                  factory: '',
+                  userId: userId,
+                  username: '',
+                  email: '',
+                  role: '',
+                  lastLoginAt: DateTime.now(),
+                  isActive: true,
+                  fromDevice: 'M'),
+              sessionId: cookies.first.value,
+              accessToken: cookies.first.value,
+              refreshToken: cookies.first.value,
+              expiresAt:
+                  DateTime.now().add(const Duration(hours: 8)), // 8시간 후 만료
+              lastAccess: DateTime.now(),
+              isValid: true);
+        } else {
+          print(
+              "Login Failed: Server returned 200 OK, but no session cookie was set.");
+          // This can happen if credentials are wrong and it just re-renders the login page.
+          throw Exception('아이디와 비밀번호를 확인하세요.');
+        }
+      } else {
+        print("Login failed with status: ${response.statusCode}");
+        throw Exception('${response.statusCode}');
+      }
+    } on DioException catch (e) {
       print("Error during login: $e");
       throw Exception('로그인 실패: ${e.toString()}');
-    }
-    catch (e) {
+    } catch (e) {
       throw Exception('로그인 실패: ${e.toString()}');
     }
   }
@@ -102,21 +99,15 @@ class PdaApiService {
   }
 
   // Coil related APIs
-  Future<List<CoilModel>> getCoils({
-    int page = 1,
-    int limit = 20,
-    String? search,
-    String? status,
-  }) async {
-    final response = await _dio.get<Map<String, dynamic>>(
-      '/coils',
-      queryParameters: {
-        'page': page,
-        'limit': limit,
-        if (search != null) 'search': search,
-        if (status != null) 'status': status,
-      },
-    );
+  Future<List<CoilModel>> getCoils(
+      {int page = 1, int limit = 20, String? search, String? status}) async {
+    final response =
+        await _dio.get<Map<String, dynamic>>('/coils', queryParameters: {
+      'page': page,
+      'limit': limit,
+      if (search != null) 'search': search,
+      if (status != null) 'status': status
+    });
 
     final List<dynamic> coilsData = response.data?['data'] ?? [];
     return coilsData.map((json) => CoilModel.fromJson(json)).toList();
@@ -128,18 +119,14 @@ class PdaApiService {
   }
 
   Future<CoilModel> createCoil(Map<String, dynamic> coilData) async {
-    final response = await _dio.post<Map<String, dynamic>>(
-      '/coils',
-      data: coilData,
-    );
+    final response =
+        await _dio.post<Map<String, dynamic>>('/coils', data: coilData);
     return CoilModel.fromJson(response.data!);
   }
 
   Future<CoilModel> updateCoil(String id, Map<String, dynamic> coilData) async {
-    final response = await _dio.put<Map<String, dynamic>>(
-      '/coils/$id',
-      data: coilData,
-    );
+    final response =
+        await _dio.put<Map<String, dynamic>>('/coils/$id', data: coilData);
     return CoilModel.fromJson(response.data!);
   }
 
@@ -160,28 +147,21 @@ class PdaApiService {
   }
 
   // Shipment related APIs
-  Future<List<Map<String, dynamic>>> getShipments({
-    int page = 1,
-    int limit = 20,
-    String? status,
-  }) async {
-    final response = await _dio.get<Map<String, dynamic>>(
-      '/shipments',
-      queryParameters: {
-        'page': page,
-        'limit': limit,
-        if (status != null) 'status': status,
-      },
-    );
+  Future<List<Map<String, dynamic>>> getShipments(
+      {int page = 1, int limit = 20, String? status}) async {
+    final response = await _dio.get<Map<String, dynamic>>('/shipments',
+        queryParameters: {
+          'page': page,
+          'limit': limit,
+          if (status != null) 'status': status
+        });
     return List<Map<String, dynamic>>.from(response.data?['data'] ?? []);
   }
 
   Future<Map<String, dynamic>> createShipment(
       Map<String, dynamic> shipmentData) async {
-    final response = await _dio.post<Map<String, dynamic>>(
-      '/shipments',
-      data: shipmentData,
-    );
+    final response =
+        await _dio.post<Map<String, dynamic>>('/shipments', data: shipmentData);
     return response.data!;
   }
 }
