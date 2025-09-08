@@ -32,6 +32,12 @@ migrate_working_dir/
 .pub-cache/
 .pub/
 /build/
+*.freezed.dart
+*.g.dart
+*.cache
+
+*.cmake
+*.swift
 
 # Symbolication related
 app.*.symbols
